@@ -10,10 +10,9 @@ Config = {}
 Config.Locale = 'en'
 
 --sc_phonetax
+Config.PtAllow = true
 Config.PtPrice = 25 --How much should it cost
-
-Config.PtTime = 15 --Time between payments || Specified here in minutes
-
+Config.PtTime = 30 --Time between payments || Specified here in minutes
 Config.PtChar = 'WEB_FRUIT' -- Find other Chars: https://wiki.rage.mp/index.php?title=Notification_Pictures
 Config.PtName = 'DigitalDen'
 
@@ -24,17 +23,15 @@ Config.ItemsToCheck = {
 }
 
 --sc_cartax
+Config.CtAllow = true
 Config.CtPrice = 30 --How much should it cost
-
-Config.CtTime = 12 --Time between payments || Specified here in minutes
-
+Config.CtTime = 15 --Time between payments || Specified here in minutes
 Config.CtChar = 'CHAR_MP_MORS_MUTUAL' -- Find other Chars: https://wiki.rage.mp/index.php?title=Notification_Pictures
 Config.CtName = 'MORS MUTUAL'
 
 --[NEW] sc_playertax
-
-Config.UtTime = 20 --Time between payments || Specified here in minutes
-
+Config.UtAllow = true
+Config.UtTime = 25 --Time between payments || Specified here in minutes
 Config.UtName = 'IRS'
 Config.UtChar = 'CHAR_BLANK_ENTRY'
 
