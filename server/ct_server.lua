@@ -22,14 +22,14 @@ if Config.CtAllow then
     ESX.RegisterServerCallback('sc_taxsystem:getUninsuredVehicles', function(source, cb)
         local xPlayer = ESX.GetPlayerFromId(source)
         if not xPlayer then
-            print("[ERROR] Spieler konnte nicht gefunden werden!")
+            print(Translation[Config.Locale]['er_player']) 
             cb({})
             return
         end
 
         local identifier = xPlayer.getIdentifier()
         if not identifier then
-            print("[ERROR] Spieler hat keine gültige Identifier!")
+            print(Translation[Config.Locale]['er_ident'])
             cb({})
             return
         end
@@ -43,7 +43,7 @@ if Config.CtAllow then
                     if row.plate then
                         table.insert(uninsuredVehicles, { plate = row.plate })
                     else
-                        print("[ERROR] Fahrzeug ohne Kennzeichen gefunden!")
+                        print(Translation[Config.Locale]['er_lp'])
                     end
                 end
                 cb(uninsuredVehicles)
@@ -57,18 +57,18 @@ if Config.CtAllow then
     AddEventHandler('sc_taxsystem:insureVehicle', function(plate)
         local xPlayer = ESX.GetPlayerFromId(source)
         if not xPlayer then
-            print("[ERROR] Spieler konnte nicht gefunden werden!")
+            print(Translation[Config.Locale]['er_player'])
             return
         end
 
         local identifier = xPlayer.getIdentifier()
         if not identifier then
-            print("[ERROR] Spieler hat keine gültige Identifier!")
+            print(Translation[Config.Locale]['er_ident'])
             return
         end
 
         if not plate or plate == "" then
-            print("[ERROR] Kein Kennzeichen übergeben!")
+            print(Translation[Config.Locale]['er_lpc'])
             return
         end
 
@@ -79,14 +79,14 @@ if Config.CtAllow then
         }, function(affectedRows)
             if affectedRows > 0 then
                 TriggerClientEvent('ox_lib:notify', xPlayer.source, {
-                    title = 'Erfolg',
-                    description = 'Das Fahrzeug mit dem Kennzeichen ' .. plate .. ' wurde erfolgreich versichert.',
+                    title = Translation[Config.Locale]['success'],
+                    description = Translation[Config.Locale]['cwp'] .. plate .. Translation[Config.Locale]['cwp_1'],
                     type = 'success'
                 })
             else
                 TriggerClientEvent('ox_lib:notify', xPlayer.source, {
-                    title = 'Fehler',
-                    description = 'Das Fahrzeug konnte nicht versichert werden.',
+                    title = Translation[Config.Locale]['error'],
+                    description = Translation[Config.Locale]['er_ins'],
                     type = 'error'
                 })
             end
@@ -96,14 +96,14 @@ if Config.CtAllow then
     ESX.RegisterServerCallback('sc_taxsystem:getInsuredVehicles', function(source, cb)
         local xPlayer = ESX.GetPlayerFromId(source)
         if not xPlayer then
-            print("[ERROR] Spieler konnte nicht gefunden werden!")
+            print(Translation[Config.Locale]['er_player'])
             cb({})
             return
         end
 
         local identifier = xPlayer.getIdentifier()
         if not identifier then
-            print("[ERROR] Spieler hat keine gültige Identifier!")
+            print(Translation[Config.Locale]['er_ident'])
             cb({})
             return
         end
@@ -117,7 +117,7 @@ if Config.CtAllow then
                     if row.plate then
                         table.insert(uninsuredVehicles, { plate = row.plate })
                     else
-                        print("[ERROR] Fahrzeug ohne Kennzeichen gefunden!")
+                        print(Translation[Config.Locale]['er_lp'])
                     end
                 end
                 cb(uninsuredVehicles)
@@ -131,18 +131,18 @@ if Config.CtAllow then
     AddEventHandler('sc_taxsystem:removeInsurance', function(plate)
         local xPlayer = ESX.GetPlayerFromId(source)
         if not xPlayer then
-            print("[ERROR] Spieler konnte nicht gefunden werden!")
+            print(Translation[Config.Locale]['er_player'])
             return
         end
 
         local identifier = xPlayer.getIdentifier()
         if not identifier then
-            print("[ERROR] Spieler hat keine gültige Identifier!")
+            print(Translation[Config.Locale]['er_ident'])
             return
         end
 
         if not plate or plate == "" then
-            print("[ERROR] Kein Kennzeichen übergeben!")
+            print(Translation[Config.Locale]['er_lpc'])
             return
         end
 
@@ -152,14 +152,14 @@ if Config.CtAllow then
         }, function(affectedRows)
             if affectedRows > 0 then
                 TriggerClientEvent('ox_lib:notify', xPlayer.source, {
-                    title = 'Erfolg',
-                    description = 'Die Versicherung des Fahrzeugs mit dem Kennzeichen ' .. plate .. ' wurde erfolgreich aufgehoben.',
+                    title = Translation[Config.Locale]['success'],
+                    description = Translation[Config.Locale]['insc'] .. plate .. Translation[Config.Locale]['insc_1'],
                     type = 'success'
                 })
             else
                 TriggerClientEvent('ox_lib:notify', xPlayer.source, {
-                    title = 'Fehler',
-                    description = 'Das Fahrzeug konnte nicht entversichert werden.',
+                    title = Translation[Config.Locale]['error'],
+                    description = Translation[Config.Locale]['er_rins'],
                     type = 'error'
                 })
             end
