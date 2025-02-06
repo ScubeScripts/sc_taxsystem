@@ -5,7 +5,7 @@ lua54 'yes'
 name "sc_taxsystem"
 author "ScubeScripts"
 description "Three of my best tax systems."
-version "1.0.3"
+version "1.0.4"
 
 server_scripts {
     '@oxmysql/lib/MySQL.lua',
