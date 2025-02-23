@@ -1,3 +1,6 @@
+> [!WARNING]
+> Please update to 1.0.5 immediately, the old version has bugs that are currently being checked and fixed
+
 # sc_taxsystem
 
 ![](https://github.com/user-attachments/assets/6a665deb-6828-43a5-bd1d-10f6e1fb16b7)
