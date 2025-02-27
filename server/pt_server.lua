@@ -1,59 +1,45 @@
 ESX = exports["es_extended"]:getSharedObject()
 
-local price = Config.PtPrice
+if Config.PtAllow then
+    function sendNotification(xPlayer, title, description, duration, icon)
+        TriggerEvent('sc_taxsystem:sendNotification', xPlayer.source, title, description, duration, icon)
+    end
 
-function removeColorCodes(text)
-    return text:gsub("~[a-zA-Z0-9]~", "")
-end
-Citizen.CreateThread(function()
-    while true do
-        for _, playerid in pairs(GetPlayers()) do
-            local xPlayer = ESX.GetPlayerFromId(playerid)
-            
-            if xPlayer then
-                local totalPrice = 0
+    local price = Config.PtPrice
+
+    Citizen.CreateThread(function()
+        while true do
+            for _, playerid in pairs(GetPlayers()) do
+                local xPlayer = ESX.GetPlayerFromId(playerid)
                 
-                for _, itemToCheck in ipairs(Config.ItemsToCheck) do
-                    if xPlayer.getInventoryItem(itemToCheck.name) ~= nil then
-                        local itemCount = xPlayer.getInventoryItem(itemToCheck.name).count
-                        if itemCount >= itemToCheck.minimumCount then 
-                            totalPrice = totalPrice + price
-                        end
-                    end    
-                end
-                if totalPrice > 0 then
-                    xPlayer.removeAccountMoney('bank', totalPrice, Config.PtName)
-                    for _, notifyModule in ipairs(Config.Notify) do
-                        if notifyModule.enabled then
-                            local notificationText = Translation[Config.Locale]['pttext'] .. totalPrice .. Translation[Config.Locale]['pttext_2']
-                            
-                            if notifyModule.name == "ox_lib" then
-                                notificationText = removeColorCodes(notificationText)
+                if xPlayer then
+                    local totalPrice = 0
+                    
+                    for _, itemToCheck in ipairs(Config.ItemsToCheck) do
+                        if xPlayer.getInventoryItem(itemToCheck.name) ~= nil then
+                            local itemCount = xPlayer.getInventoryItem(itemToCheck.name).count
+                            if itemCount >= itemToCheck.minimumCount then 
+                                totalPrice = totalPrice + price
                             end
-                            if notifyModule.name == "bulletin" then
-                                TriggerClientEvent('bulletin:sendAdvanced', xPlayer.source, notificationText, Translation[Config.Locale]['handy'], Translation[Config.Locale]['pay_pttext'], Config.PtChar, Config.Delay, Config.Position, Config.Progress, Config.Theme, Config.exitAnim)
-                            elseif notifyModule.name == "default" then
-                                TriggerClientEvent('sc_taxsystem:picturemsg', xPlayer.source, Config.PtChar, notificationText, Translation[Config.Locale]['handy'], Translation[Config.Locale]['pay_pttext'])
-                            elseif notifyModule.name == "ox_lib" then
-                                TriggerClientEvent('ox_lib:notify', xPlayer.source, {
-                                    id = 'phone_notify',
-                                    title = Translation[Config.Locale]['pay_pttext'],
-                                    description = notificationText,
-                                    duration = 5000,
-                                    icon = 'mobile-screen',
-                                    iconAnimation = 'shake'
-                                })
-                            end
+                        end    
+                    end
+
+                    if totalPrice > 0 then
+                        local amount = totalPrice
+                        local label = Config.PtName
+                        local societyAccount = Config.Society
+                        exports.sc_taxsystem:handleTaxPayment(xPlayer, amount, label, societyAccount)
+                        if Config.useBilling then
+
+                        else
+                            sendNotification(xPlayer, Config.PtName, Translation[Config.Locale]['pttext'] .. totalPrice .. Translation[Config.Locale]['pttext_2'], 5000, 'mobile-screen')
                         end
                     end
                 end
             end
+            Citizen.Wait(Config.PtTime * 60000)
         end
-        Citizen.Wait(Config.PtTime * 60000)
-    end
-end)
-
-
-
-
-
+    end)
+else
+    print("[TAX SYSTEM] PHONE-TAX IS OFF")
+end
